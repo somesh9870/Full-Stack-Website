@@ -70,9 +70,13 @@ const Myblogs = () => {
   };
 
   const handleUpdate = async (id) => {
+    const payload = {
+      content: text,
+    };
     try {
       let res = await axios.patch(
         `https://shy-gold-beaver-tie.cyclic.app/blogs/update/${id}`,
+        payload,
         {
           headers: {
             Authorization: `${localStorage.getItem("token")}`,
@@ -80,13 +84,26 @@ const Myblogs = () => {
           },
         }
       );
+      console.log(res.data);
+      setText("");
+      setShow(false);
     } catch (err) {
-      console.log(err);
+      console.log("oops error", err);
     }
   };
 
   const handleDelete = async (id) => {
     try {
+      let res = await axios.delete(
+        `https://shy-gold-beaver-tie.cyclic.app/blogs/delete/${id}`,
+        {
+          headers: {
+            Authorization: `${localStorage.getItem("token")}`,
+            "Content-Type": "application/json",
+          },
+        }
+      );
+      console.log(res.data);
     } catch (err) {
       console.log(err);
     }

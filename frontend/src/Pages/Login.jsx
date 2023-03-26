@@ -12,8 +12,29 @@ import {
   Text,
   useColorModeValue,
 } from "@chakra-ui/react";
+import axios from "axios";
+import { useState } from "react";
 
 export default function Login() {
+  const [email, setEmail] = useState("");
+  const [password, setPassword] = useState("");
+
+  const handleLogin = async () => {
+    const payload = {
+      email,
+      password,
+    };
+    try {
+      let res = await axios.post(
+        "https://shy-gold-beaver-tie.cyclic.app/users/login",
+        payload
+      );
+      console.log(res.data);
+    } catch (err) {
+      console.log("error", err);
+    }
+  };
+
   return (
     <Flex
       minH={"100vh"}
@@ -37,11 +58,14 @@ export default function Login() {
           <Stack spacing={4}>
             <FormControl id="email">
               <FormLabel>Email address</FormLabel>
-              <Input type="email" />
+              <Input type="email" onChange={(e) => setEmail(e.target.value)} />
             </FormControl>
             <FormControl id="password">
               <FormLabel>Password</FormLabel>
-              <Input type="password" />
+              <Input
+                type="password"
+                onChange={(e) => setPassword(e.target.value)}
+              />
             </FormControl>
             <Stack spacing={10}>
               <Stack
@@ -58,6 +82,7 @@ export default function Login() {
                 _hover={{
                   bg: "blue.500",
                 }}
+                onClick={handleLogin}
               >
                 Sign in
               </Button>

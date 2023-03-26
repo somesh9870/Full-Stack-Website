@@ -1,11 +1,11 @@
 const express = require("express");
 const UserModel = require("../models/user.model");
 const bcrypt = require("bcrypt");
-const userRouter = express.Router();
 const jwt = require("jsonwebtoken");
+const userRouter = express.Router();
 
 userRouter.post("/register", async (req, res) => {
-  const { firstname, lastname, email, password, mobile } = req.body;
+  const { firstname, lastname, email, password } = req.body;
   try {
     const isEmail = await UserModel.findOne({ email: email });
     if (isEmail) {
@@ -17,8 +17,6 @@ userRouter.post("/register", async (req, res) => {
           lastname,
           email,
           password: hash,
-          mobile,
-          isLogin: false,
         };
         const user = new UserModel(payload);
         await user.save();

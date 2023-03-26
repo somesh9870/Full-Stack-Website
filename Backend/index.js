@@ -7,9 +7,10 @@ const cors = require("cors");
 require("dotenv").config();
 
 const app = express();
-app.use(cors());
 
+app.use(cors());
 app.use(express.json());
+
 app.use("/users", userRouter);
 app.use(auth);
 app.use("/blogs", blogRouter);

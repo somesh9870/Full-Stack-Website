@@ -12,13 +12,36 @@ import {
   Heading,
   Text,
   useColorModeValue,
-  Link,
 } from "@chakra-ui/react";
 import { useState } from "react";
 import { ViewIcon, ViewOffIcon } from "@chakra-ui/icons";
+import { Link } from "react-router-dom";
+import axios from "axios";
 
 export default function Signup() {
   const [showPassword, setShowPassword] = useState(false);
+  const [fname, setFname] = useState("");
+  const [lname, setLname] = useState("");
+  const [email, setEmail] = useState("");
+  const [password, setPassword] = useState("");
+
+  const handleSubmit = async () => {
+    const payload = {
+      firstname: fname,
+      lastname: lname,
+      email,
+      password,
+    };
+    try {
+      let res = await axios.post(
+        `https://shy-gold-beaver-tie.cyclic.app/users/register`,
+        payload
+      );
+      console.log(res);
+    } catch (err) {
+      console.log("error", err.message);
+    }
+  };
 
   return (
     <Flex
@@ -47,24 +70,33 @@ export default function Signup() {
               <Box>
                 <FormControl id="firstName" isRequired>
                   <FormLabel>First Name</FormLabel>
-                  <Input type="text" />
+                  <Input
+                    type="text"
+                    onChange={(e) => setFname(e.target.value)}
+                  />
                 </FormControl>
               </Box>
               <Box>
                 <FormControl id="lastName">
                   <FormLabel>Last Name</FormLabel>
-                  <Input type="text" />
+                  <Input
+                    type="text"
+                    onChange={(e) => setLname(e.target.value)}
+                  />
                 </FormControl>
               </Box>
             </HStack>
             <FormControl id="email" isRequired>
               <FormLabel>Email address</FormLabel>
-              <Input type="email" />
+              <Input type="email" onChange={(e) => setEmail(e.target.value)} />
             </FormControl>
             <FormControl id="password" isRequired>
               <FormLabel>Password</FormLabel>
               <InputGroup>
-                <Input type={showPassword ? "text" : "password"} />
+                <Input
+                  type={showPassword ? "text" : "password"}
+                  onChange={(e) => setPassword(e.target.value)}
+                />
                 <InputRightElement h={"full"}>
                   <Button
                     variant={"ghost"}
@@ -86,13 +118,17 @@ export default function Signup() {
                 _hover={{
                   bg: "blue.500",
                 }}
+                onClick={handleSubmit}
               >
                 Sign up
               </Button>
             </Stack>
             <Stack pt={6}>
               <Text align={"center"}>
-                Already a user? <Link color={"blue.400"}>Login</Link>
+                Already a user?{" "}
+                <Link to={"/login"} color={"blue.400"}>
+                  Login
+                </Link>
               </Text>
             </Stack>
           </Stack>

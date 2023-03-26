@@ -87,6 +87,7 @@ const Myblogs = () => {
       console.log(res.data);
       setText("");
       setShow(false);
+      fetchData();
     } catch (err) {
       console.log("oops error", err);
     }
@@ -104,6 +105,7 @@ const Myblogs = () => {
         }
       );
       console.log(res.data);
+      fetchData();
     } catch (err) {
       console.log(err);
     }
@@ -119,7 +121,7 @@ const Myblogs = () => {
         Write Something
       </Text>
 
-      <Stack spacing={4} w="50%" m={"auto"} mb="30px">
+      <Stack spacing={4} w="30%" m={"auto"} mb="30px">
         <FormControl>
           <FormLabel>Title</FormLabel>
           <Input
@@ -170,14 +172,14 @@ const Myblogs = () => {
             <Box
               key={blog._id}
               border="1px solid teal"
-              width="40%"
+              width="50%"
               margin="auto"
-              padding="10px"
-              marginBottom="10px"
+              padding="20px"
+              marginBottom="20px"
             >
-              <Text>Title: {blog.title}</Text>
-              <Text> {blog.content}</Text>
-              <Text> {blog.author}</Text>
+              <Text mb={"10px"}>Title: {blog.title}</Text>
+              <Text mb={"10px"}> {blog.content}</Text>
+              <Text mb={"10px"}>Author: {blog.author}</Text>
               <Box
                 style={{
                   display: show ? "block" : "none",

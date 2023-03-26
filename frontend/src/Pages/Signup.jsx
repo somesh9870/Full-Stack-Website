@@ -37,7 +37,7 @@ export default function Signup() {
         `https://shy-gold-beaver-tie.cyclic.app/users/register`,
         payload
       );
-      console.log(res);
+      console.log(res.data);
     } catch (err) {
       console.log("error", err.message);
     }

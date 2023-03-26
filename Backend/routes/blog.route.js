@@ -10,7 +10,7 @@ blogRouter.post("/add", async (req, res) => {
   try {
     const blog = new BlogModel(payload);
     await blog.save();
-    res.status(200).send({ message: "Comment is posted" });
+    res.status(200).send({ message: "Blog is posted" });
   } catch (err) {
     res.status(400).send({ message: err.message });
   }
@@ -18,25 +18,53 @@ blogRouter.post("/add", async (req, res) => {
 
 // Read
 blogRouter.get("/", async (req, res) => {
+  const token = req.headers.authorization;
+  const decoded = jwt.verify(token, "somesh");
   try {
-    const blogs = await BlogModel.find();
-    res.status(200).send(blogs);
+    if (decoded) {
+      const userID = decoded.userID;
+      const blogs = await BlogModel.find({ userID: userID });
+      res.status(200).send(blogs);
+    }
   } catch (err) {
     res.status(400).send({ message: err.message });
   }
 });
 
 // Update
-blogRouter.patch("/update/:id", async (req, res) => {
+blogRouter.patch("/update/:blogID", async (req, res) => {
+  const token = req.headers.authorization;
+  const decoded = jwt.verify(token, "somesh");
+  const userID = decoded.userID;
+  const { blogID } = req.params;
+  const payload = req.body;
   try {
+    const blog = await BlogModel.findOne({ _id: blogID });
+    if (blog.userID === userID) {
+      await BlogModel.findByIdAndUpdate({ _id: blogID }, payload);
+      res.status(200).send({ message: "Blog has been updated" });
+    } else {
+      res.status(400).send({ message: "Not authorized" });
+    }
   } catch (err) {
     res.status(400).send({ message: err.message });
   }
 });
 
 // Delete
-blogRouter.delete("/update/:id", async (req, res) => {
+blogRouter.delete("/delete/:blogID", async (req, res) => {
+  const token = req.headers.authorization;
+  const decoded = jwt.verify(token, "somesh");
+  const userID = decoded.userID;
+  const { blogID } = req.params;
   try {
+    const blog = await BlogModel.findOne({ _id: blogID });
+    if (blog.userID === userID) {
+      await BlogModel.findByIdAndDelete({ _id: blogID });
+      res.status(200).send({ message: "Blog deleted successfully" });
+    } else {
+      res.status(400).send({ message: "Not authorized" });
+    }
   } catch (err) {
     res.status(400).send({ message: err.message });
   }

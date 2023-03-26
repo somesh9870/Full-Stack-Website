@@ -2,13 +2,10 @@ const mongoose = require("mongoose");
 
 const blogSchema = mongoose.Schema(
   {
-    category: String,
     title: String,
     content: String,
     author: String,
-    views: Number,
-    date: { type: Date, default: Date.now },
-    Comment: Array,
+    userID: String,
   },
   {
     versionKey: false,

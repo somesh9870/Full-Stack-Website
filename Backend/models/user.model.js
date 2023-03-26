@@ -13,8 +13,6 @@ const userSchema = mongoose.Schema(
       required: true,
       type: String,
     },
-    mobile: Number,
-    isLogin: Boolean,
   },
   {
     versionKey: false,

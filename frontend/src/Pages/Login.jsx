@@ -18,6 +18,7 @@ import { useState } from "react";
 export default function Login() {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
+  const [name, setName] = useState("");
 
   const handleLogin = async () => {
     const payload = {
@@ -30,6 +31,8 @@ export default function Login() {
         payload
       );
       console.log(res.data);
+      localStorage.setItem("name", name);
+      localStorage.setItem("token", res.data.token);
     } catch (err) {
       console.log("error", err);
     }
@@ -56,6 +59,10 @@ export default function Login() {
           p={8}
         >
           <Stack spacing={4}>
+            <FormControl id="name">
+              <FormLabel>Name</FormLabel>
+              <Input type="text" onChange={(e) => setName(e.target.value)} />
+            </FormControl>
             <FormControl id="email">
               <FormLabel>Email address</FormLabel>
               <Input type="email" onChange={(e) => setEmail(e.target.value)} />
